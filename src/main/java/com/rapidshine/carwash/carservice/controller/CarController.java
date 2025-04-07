@@ -2,6 +2,7 @@ package com.rapidshine.carwash.carservice.controller;
 
 import com.rapidshine.carwash.carservice.dto.CarDto;
 import com.rapidshine.carwash.carservice.dto.CarListDto;
+import com.rapidshine.carwash.carservice.model.Car;
 import com.rapidshine.carwash.carservice.service.CarService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class CarController {
     }
 
     @GetMapping("/{id}")
-    public CarDto getCar(Authentication authentication, @PathVariable Long id) throws Exception {
+    public Car getCar(Authentication authentication, @PathVariable Long id) throws Exception {
         return carService.getCarById(authentication.getName(),id);
     }
 

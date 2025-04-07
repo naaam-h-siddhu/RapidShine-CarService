@@ -54,13 +54,13 @@ public class CarService {
 
     }
 
-    public CarDto getCarById(String email,Long id)throws  Exception{
+    public Car getCarById(String email,Long id)throws  Exception{
         Customer customer = getCustomer(email);
         Car car = carRepository.findById(id).orElseThrow(()-> new RuntimeException("Car not found with ID: "+id));
         if(!car.getCustomer().getCustomerID().equals(customer.getCustomerID())){
             throw new RuntimeException("You do not have access of the car with ID: "+id);
         }
-        return new CarDto(car.getBrand(), car.getModel(), car.getLicenceNumberPlate());
+        return car;
 
     }
 
