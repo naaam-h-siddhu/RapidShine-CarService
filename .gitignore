@@ -33,13 +33,9 @@ build/
 .vscode/
 
 .gitattributes
-
 mvnw
 mvnw.cmd
 target
 .mvn
-
 bin
-
-
 .DS_Store
