@@ -15,8 +15,14 @@ import java.util.List;
 @RequestMapping("/car")
 public class CarController {
 
+
     @Autowired
     private CarService carService;
+
+    @GetMapping("/health")
+    public String hello() {
+        return "Hello World";
+    }
     @PostMapping
     public CarDto addCar(Authentication authentication, @RequestBody CarDto carDto) throws Exception {
         String email = authentication.getName();
