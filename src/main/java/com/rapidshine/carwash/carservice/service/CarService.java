@@ -30,7 +30,14 @@ public class CarService {
     public CarDto saveCar(String email,CarDto carDto) throws Exception{
 
         Customer customer = getCustomer(email);
-        Car car = new Car(carDto.getBrand(),carDto.getModel(),carDto.getLicenceNumberPlate());
+        Car car = new Car(
+                carDto.getBrand(),
+                carDto.getModel(),
+                carDto.getLicenceNumberPlate(),
+                carDto.getCarType());
+        if(carRepository.findByLicenceNumberPlate(carDto.getLicenceNumberPlate()).orElse(null) != null){
+            System.out.println("YAHA TO CAR HAI BHAI");
+        }
         if(carRepository.existsByLicenceNumberPlate(carDto.getLicenceNumberPlate())){
             throw  new CarAlreadyExists("Car with licence number "+carDto.getLicenceNumberPlate()+" already exists");
         }
@@ -41,12 +48,9 @@ public class CarService {
 
     }
 
-    public CarListDto getAllCars(String email) throws Exception{
-        Customer customer = getCustomer(email);
+    public CarListDto getAllCars(Long customerId) throws Exception{
+        Customer customer = getCustomer(customerId);
         List<Car> carList = carRepository.findAllByCustomerId(customer.getCustomerID());
-
-
-
         CarListDto carListDto = new CarListDto();
         carListDto.setCars(carList);
         return carListDto;
@@ -54,8 +58,8 @@ public class CarService {
 
     }
 
-    public Car getCarById(String email,Long id)throws  Exception{
-        Customer customer = getCustomer(email);
+    public Car getCarById(Long customerId,Long id)throws  Exception{
+        Customer customer = getCustomer(customerId);
         Car car = carRepository.findById(id).orElseThrow(()-> new RuntimeException("Car not found with ID: "+id));
         if(!car.getCustomer().getCustomerID().equals(customer.getCustomerID())){
             throw new RuntimeException("You do not have access of the car with ID: "+id);
@@ -77,6 +81,7 @@ public class CarService {
         }
         car.setBrand(carDto.getBrand());
         car.setModel(carDto.getModel());
+        car.setCarType(carDto.getCarType());
         car.setLicenceNumberPlate(carDto.getLicenceNumberPlate());
 
         carRepository.save(car);
@@ -106,6 +111,12 @@ public class CarService {
         Long id = user.getId();
         Customer customer = customerRepository.findByUserId(id).orElseThrow(()-> new UserNotFoundException("Customer " +
                 "with "+email+" not found"));
+        return customer;
+    }
+    private Customer getCustomer(Long customerId) throws Exception{
+
+        Customer customer = customerRepository.findById(customerId).orElseThrow(()-> new UserNotFoundException("Customer " +
+                "with Customer ID : "+customerId+" not found"));
         return customer;
     }
 }

@@ -1,16 +1,16 @@
 package com.rapidshine.carwash.carservice.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class CarDto {
     private String brand;
     private String model;
+    private String carType;
     private String licenceNumberPlate;
 
 }

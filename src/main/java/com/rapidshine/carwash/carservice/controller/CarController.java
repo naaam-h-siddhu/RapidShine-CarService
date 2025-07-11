@@ -6,6 +6,7 @@ import com.rapidshine.carwash.carservice.model.Car;
 import com.rapidshine.carwash.carservice.service.CarService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,14 +33,14 @@ public class CarController {
     }
 
     @GetMapping
-    public CarListDto getAllCar(Authentication authentication) throws Exception {
-        String email = authentication.getName();
-        return carService.getAllCars(email);
+    public CarListDto getAllCar(Authentication authentication,@RequestParam Long customer_id) throws Exception {
+//        String email = authentication.getName();
+        return carService.getAllCars(customer_id);
     }
 
     @GetMapping("/{id}")
-    public Car getCar(Authentication authentication, @PathVariable Long id) throws Exception {
-        return carService.getCarById(authentication.getName(),id);
+    public Car getCar(Authentication authentication, @PathVariable Long id,Long customer_id) throws Exception {
+        return carService.getCarById(customer_id,id);
     }
 
     @PutMapping("/{id}")

@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "cars")
@@ -18,16 +17,14 @@ public class Car {
     private Long carId;
     private String brand;
 
-    public Car(String brand, String model, String licenceNumberPlate) {
+    public Car(String brand, String model, String licenceNumberPlate,String carType) {
         this.brand = brand;
         this.model = model;
+        this.carType = carType;
         this.licenceNumberPlate = licenceNumberPlate;
     }
-
-
+    private String carType;
     private String model;
-
-    @Column(unique = true,nullable = false)
     private String licenceNumberPlate;
     @ManyToOne
     @JoinColumn(name = "customer_id",nullable = false)

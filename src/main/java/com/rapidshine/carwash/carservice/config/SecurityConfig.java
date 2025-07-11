@@ -3,6 +3,7 @@ package com.rapidshine.carwash.carservice.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.net.http.HttpRequest;
 import java.nio.charset.StandardCharsets;
 
 
@@ -35,7 +37,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/car/**").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.GET,"/car/**").hasRole("M2M")
+                        .requestMatchers(HttpMethod.POST,"/car/**").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT,"/car/**").hasRole("CUSTOMER")
+                        .requestMatchers(HttpMethod.DELETE,"/car/**").hasRole("CUSTOMER")
+
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -62,3 +68,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(12);
     }
 }
+
